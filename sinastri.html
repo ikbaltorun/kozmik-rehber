@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinastri - Uyum Haritası</title>
+    <link rel="stylesheet" href="sinastri.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+</head>
+<body class="sinastri-body">
+
+    <div class="back-link-container">
+        <a href="itpproje.html" class="back-link">&larr; Ana Sayfaya Dön</a>
+    </div>
+
+    <section class="sinastri-wrapper">
+        <h1 class="sinastri-title">Kozmik Uyumunu Test Et</h1>
+        <p class="sinastri-desc">Kendinin ve uyumunu merak ettiğin kişinin bilgilerini gir.</p>
+
+        <form id="sinastri-form">
+            <div class="sinastri-container">
+                
+                <div class="kisi-karti">
+                    <h3>Senin Bilgilerin</h3>
+                    <div class="input-group">
+                        <label>Ad Soyad</label>
+                        <input type="text" id="isim1" required placeholder="Örn: İkbal...">
+                    </div>
+                    <div class="input-group">
+                        <label>Doğum Tarihi</label>
+                        <input type="date" id="tarih1" required>
+                    </div>
+                </div>
+
+                <div class="kisi-karti">
+                    <h3>Partnerin Bilgileri</h3>
+                    <div class="input-group">
+                        <label>Ad Soyad</label>
+                        <input type="text" id="isim2" required placeholder="Örn: Partnerin...">
+                    </div>
+                    <div class="input-group">
+                        <label>Doğum Tarihi</label>
+                        <input type="date" id="tarih2" required>
+                    </div>
+                </div>
+
+            </div>
+            <button type="submit" class="hesapla-btn">Kozmik Uyumu Hesapla ✨</button>
+        </form>
+
+        <div id="sonuc-ekrani" class="sonuc-kutusu" style="display: none;">
+            <h3 id="burclar-ozet"></h3>
+            <h2 id="uyum-yuzdesi">✨ Kozmik Analiz ✨</h2>
+            <p id="uyum-yorumu"></p>
+        </div>
+    </section>
+
+    <script>
+        // 144 İhtimalli Astroloji Veritabanı
+        const uyumVeritabani = {
+            "Koç": {
+                "Koç": "Çift doz enerji; heyecanlı ama sürekli bir liderlik savaşı. İkisi de kontrolü elinde tutmak istediği için tartışmalar alevli geçer ama barışmaları da bir o kadar tutkuludur.",
+                "Boğa": "Hız farkı büyük bir engeldir; Koç hemen harekete geçmek isterken, Boğa düşünmek ve emin olmak için zamana ihtiyaç duyar. İki tarafın da esnemesi gereken zorlayıcı bir dinamiktir.",
+                "İkizler": "Çok eğlenceli, hareketli ve spontane bir uyum. İkizler'in yeni fikirleri Koç'un eyleme geçme cesaretiyle birleşince ortaya asla sıkılmayacakları, bol kahkahalı bir macera çıkar.",
+                "Yengeç": "Biri çok direkt ve fevri, diğeri ise çok hassas ve kırılgandır. Koç'un düşünmeden söylediği sözler Yengeç'te derin yaralar açabilir, duygusal krizlere çok açıktır.",
+                "Aslan": "Sahne ışıkları altında harika bir ikili; tutku, enerji ve gurur bir arada. Birbirlerini çok iyi motive ederler ancak ego savaşlarına girmemeye çok özen göstermeleri gerekir.",
+                "Başak": "Koç’un dağınıklığı ve plansızlığı, her şeyi organize etmek isteyen Başak’ı yorar. Başak'ın sürekli eleştirmesi ise Koç'un hevesini kırabilir; bolca sabır gerektirir.",
+                "Terazi": "Zıt kutupların çekimi; Koç 'ben' diyerek öne atılırken, Terazi 'biz' diyerek denge arar. Birbirlerinin eksik yönlerini tamamlarlarsa çok güçlü ve çekici bir çift olurlar.",
+                "Akrep": "İkisi de Mars etkisinde olduğu için çok güçlü ve inatçı karakterlerdir. İlişki ya muazzam bir tutkuyla zirveye çıkar ya da yıkıcı güç savaşlarıyla tamamen dibe vurur.",
+                "Yay": "Tam bir macera arkadaşlığı; dünyayı birlikte fethedebilirler. İkisi de özgürlüğüne düşkün ve enerjik olduğu için birbirlerini hiç kısıtlamadan harika vakit geçirirler.",
+                "Oğlak": "İkisi de hedeflerine ulaşmak ve yönetmek ister. Kariyer ve başarı odaklı, sert bir ilişkidir; duygusal paylaşımdan ziyade karşılıklı saygıya dayanan bir ortaklık gibi hissettirir.",
+                "Kova": "Özgürlükçü, yenilikçi ve çok orijinal bir çift. Kova'nın sıradışı vizyonu Koç'un cesaretiyle buluşunca ortaya hem çok sağlam bir arkadaşlık hem de dinamik bir aşk çıkar.",
+                "Balık": "Koç’un sert ve sabırsız doğası, Balık’ın narin ve hayalperest ruhunu kolayca incitebilir. Bu ilişkinin yürümesi için Koç'un empati yapmayı, Balık'ın da sınır çizmeyi öğrenmesi şarttır."
+            },
+            "Boğa": {
+                "Koç": "Koç'un aceleciliği, sakin ve emin adımlarla ilerlemek isteyen Boğa'yı huzursuz eder. Boğa'nın inadı devreye girerse ilişki bir anda çözümsüz bir inatlaşmaya döner.",
+                "Boğa": "Konfor, lezzetli yemekler ve huzur odaklı; çok stabil ama bazen durağan. İkisi de değişimi sevmediği için dış dünyaya kapanıp sadece birbirleriyle vakit geçirmeyi seçebilirler.",
+                "İkizler": "Boğa kök salıp tam bir güven isterken, İkizler sürekli hareket halinde daldan dala uçmak ister. Boğa'nın sahiplenici tavrı İkizler'i boğabilir, güven inşası ciddi zaman alır.",
+                "Yengeç": "Evcimen, romantik ve çok sıcak bir yuva kurarlar. Yengeç'in şefkati Boğa'nın sarsılmaz sadakatiyle birleşince ortaya kopması çok zor, mükemmel ve kalıcı bir uyum çıkar.",
+                "Aslan": "İnatçıların ve kaliteyi sevenlerin savaşı. İkisi de kendi dediğinin olmasını ister; lüksü ve güzel yaşamı sevseler de kriz anında geri adım atmayacakları için zorlu geçer.",
+                "Başak": "Mantık, sadakat ve düzenin mükemmel uyumu. Birbirlerine gözü kapalı güvenirler; pratik konularda o kadar iyi anlaşırlar ki hayatı birbirleri için inanılmaz kolaylaştırırlar.",
+                "Terazi": "İkisini de Venüs yönetir; estetik, sanat, müzik ve keyif odaklı bir çift. Zarif bir ilişki yaşarlar ancak Terazi'nin dışa dönük sosyalliği, Boğa'nın evcimenliğiyle çatışabilir.",
+                "Akrep": "Tutkulu, derin ve sahiplenici. Zıtlıktan doğan muazzam ve çekici bir enerji vardır; Boğa'nın sükuneti Akrep'in fırtınalı ruhuna o kadar iyi gelir ki adeta birbirlerine kenetlenirler.",
+                "Yay": "Biri evdeki huzurlu koltuğunu, diğeri sırt çantasını alıp dünyayı gezmeyi ister. Hayat ritimleri ve hayattan beklentileri o kadar farklıdır ki ortak nokta bulmakta çok zorlanırlar.",
+                "Oğlak": "Maddiyat, gelecek güvencesi ve başarı odaklı, çok sağlam bir iş birliği. Sürprizler az olsa da, birbirlerine duydukları sarsılmaz saygı ve güvenle uzun yıllar mutlu olurlar.",
+                "Kova": "Biri geleneksel ve alışkanlıklarına bağlı, diğeri yenilikçi ve asidir. Boğa'nın kuralları Kova'ya anlamsız gelir; bu ilişkinin yürümesi için iki tarafın da büyük fedakarlıklar yapması gerekir.",
+                "Balık": "Çok romantik, şefkatli ve huzurlu bir bağ. Boğa, Balık'ın hayallerini gerçeğe dökmesi için ona güvenli bir zemin sunarken; Balık da Boğa'nın ruhunu romantizmle besler."
+            },
+            "İkizler": {
+                "Koç": "Çok eğlenceli, hareketli ve spontane bir uyum. İkizler'in bitmek bilmeyen fikirleri Koç'un cesaretiyle birleşince ortaya asla sıkılmayacakları, heyecanı yüksek bir macera çıkar.",
+                "Boğa": "İkizler yenilik ve hız isterken, Boğa yavaşlık ve bilindik rutinler arar. İkizler'in anlık değişen ruh hali, Boğa'nın aradığı o sarsılmaz güven duygusunu vermekte zorlanabilir.",
+                "İkizler": "Hiç bitmeyen sohbetler, ortak hobiler ve merak; zihinsel olarak çok aktif bir ikili. Ancak ikisi de derin duygusal sulardan kaçtığı için ilişki uzun süre yüzeysel kalma tehlikesi taşır.",
+                "Yengeç": "İkizler her şeyi mantıkla ve kelimelerle çözmek isterken, Yengeç tamamen duygularıyla ve sezgileriyle hareket eder. Ortak bir dil bulamadıklarında birbirlerini çok yanlış anlayabilirler.",
+                "Aslan": "Sosyal, havalı, dışa dönük ve eğlenceli. İkizler'in kıvrak zekası ve güzel sözleri Aslan'ın egosunu okşarken, birlikte girdikleri her ortamın en çok konuşulan çifti olurlar.",
+                "Başak": "İkisini de iletişim gezegeni Merkür yönetir; zihinsel kapasiteleri ve sohbetleri muazzamdır. Harika beyin fırtınası yaparlar ama Başak'ın kuralcılığı İkizler'in havai ruhuyla sürekli çarpışır.",
+                "Terazi": "Sosyal kelebeklerin buluşması; cemiyet hayatının en popüler, vizyoner ve uyumlu çifti. Sürekli gezip tozarlar, estetik zevkleri uyuşur ve iletişimleri hiçbir zaman kopmaz.",
+                "Akrep": "Akrep her şeyin en derinini ve gizemini ararken, İkizler yüzeyde kalıp anı yaşamak ister. Akrep’in yoğun kıskançlığı ve sahipleniciliği, İkizler’i kısa sürede boğup kaçırabilir.",
+                "Yay": "Zıt kutuplar; ikisi de özgürlüğüne düşkün, bol seyahatli ve yeni kültürlere meraklı. Birlikte felsefe yapar, dünyayı gezerler ama bağlanmak ve ciddi sorumluluk almak ikisine de zor gelir.",
+                "Oğlak": "Ciddiyet ve eğlence çatışması. Oğlak planlı programlı bir hayat kurmaya çalışırken, İkizler'in daldan dala konan yapısı bu ilişkiyi tam bir sabır sınavına dönüştürür.",
+                "Kova": "Entelektüel uyum zirve yapar; modern, yenilikçi ve sınırları olmayan özgür bir ilişki. Birbirlerinin en yakın arkadaşı olurlar ve hiçbir geleneksel kurala bağlı kalmadan aşklarını yaşarlar.",
+                "Balık": "İkisi de çok değişken ve yönlendirilmeye açıktır. Balık duygusal bir derinlik ararken İkizler bunu mantıkla savuşturur; bir süre sonra kafa karıştırıcı ve hedefsiz bir ilişkiye dönüşebilir."
+            },
+            "Yengeç": {
+                "Koç": "Biri düşünmeden eyleme geçer, diğeri her sözü kalbine alır. Koç'un savaşçı ruhu, evinde huzur ve şefkat arayan Yengeç'i sürekli tedirgin edebilir; bolca gözyaşı barındıran bir kriz ortamı doğabilir.",
+                "Boğa": "Evcimen, romantik ve çok sıcak bir yuva kurarlar. İkisi de ailesine ve mutfağa düşkündür; birbirlerine sundukları güven ve sadakatle kopması imkansız bir bağ yaratırlar.",
+                "İkizler": "Yengeç derin bağlar ve sessiz bir şefkat beklerken, İkizler sürekli mantıklı açıklamalar arar. Bu durum Yengeç'in kendini anlaşılmamış ve yalnız hissetmesine yol açabilir.",
+                "Yengeç": "Aşırı duygusal, nostaljik ve anaç; birbirlerinin ruh halini tek bir bakıştan anlarlar. Ancak ikisi de aynı anda melankoliye kapılırsa, o karanlık hislerden çıkıp mantıklı bir adım atmaları çok zor olur.",
+                "Aslan": "Yengeç Ay'ı, Aslan Güneş'i temsil eder; zıt ama çok tamamlayıcıdır. Yengeç arka planda destekleyici olurken Aslan sahnede parlar, ancak Yengeç'in de takdir görmesi şarttır.",
+                "Başak": "Başak'ın hayatı kolaylaştıran pratik çözümleri, Yengeç'in duygusal karmaşasını yatıştırır. Yengeç de Başak'a aradığı koşulsuz sevgiyi sunar; sessiz, sakin ve çok huzurlu bir ilişkidir.",
+                "Terazi": "Yengeç özel, kapalı ve sadece baş başa kalacağı bir bağ ister; Terazi ise dışa dönük, sosyal ve herkesle dengeli olmaya çalışır. Terazi'nin bu dışa dönüklüğü Yengeç'te güvensizlik yaratır.",
+                "Akrep": "Ruhsal, adeta telepatik ve çok derin bir bağ. Akrep'in tutkusu ve korumacılığı Yengeç'e çok iyi gelir; aralarındaki sadakat ve duygusal yoğunluk zodyaktaki en güçlü ittifaklardan biridir.",
+                "Yay": "Yay'ın aklına ilk geleni söyleyen patavatsız hali, hassas Yengeç'i sık sık incitebilir. Yay bağımsızlık için kapıya koşarken, Yengeç onu evde tutmaya çalışır; fazlasıyla yorucu bir eşleşmedir.",
+                "Oğlak": "Zıt burçlar; Oğlak dış dünyada (kariyer), Yengeç ise iç dünyada (ev) başarılı olmak ister. Birbirlerinin eksiklerini muazzam tamamlarlar ancak birbirlerinin dilini öğrenmeleri zaman alır.",
+                "Kova": "Kova fazla rasyonel, mesafeli ve toplumsal olaylara odaklıdır; Yengeç ise aşırı şefkatli ve tamamen ailesine dönüktür. Bu duygusal kopukluk, aralarında aşılmaz soğuk duvarlar örebilir.",
+                "Balık": "Masalsı, romantik ve tamamen duygular üzerine kurulu bir aşk. Birbirlerinin yaralarını sarar, kelimelere ihtiyaç duymadan anlaşır ve kendilerine ait bir hayal dünyasında mutlu yaşarlar."
+            },
+            "Aslan": {
+                "Koç": "Sahne ışıkları altında harika bir ikili; tutku, enerji ve büyük jestler bir arada. Birlikteyken çok güçlü bir enerji yayarlar ancak ikisi de 'patron' olmak istediğinde ego savaşları patlak verebilir.",
+                "Boğa": "İnatçıların ve konfor düşkünlerinin savaşı. İkisi de lüksü ve güzel olanı sever ama bir anlaşmazlık çıktığında ikisi de asla geri adım atmayacağı için sorunlar uzun süre çözümsüz kalır.",
+                "İkizler": "Sosyal, havalı ve sürekli yeni şeyler deneyen eğlenceli bir çift. İkizler'in bitmek bilmeyen merakı ve neşesi, Aslan'ın yaşam enerjisini her zaman yüksek ve canlı tutar.",
+                "Yengeç": "Güneş ve Ay uyumu; birbirlerini doğal bir şekilde dengelerler. Aslan koruyucu kollayıcı rolünü üstlenirken, Yengeç ona ihtiyaç duyduğu sonsuz ilgiyi ve ev sıcaklığını verir.",
+                "Aslan": "İki kral veya kraliçe tek tahta sığmakta çok zorlanabilir. Her şeyin en iyisini ve en gösterişlisini yaşarlar ama kimin daha çok parlayıp ilgi göreceği konusunda gizli bir rekabet yaşanır.",
+                "Başak": "Başak’ın detaycılığı ve sürekli eleştirme huyu, pohpohlanmak isteyen Aslan’ın gururunu fena kırabilir. Aslan olaylara büyük resimden bakarken, Başak'ın mikroskopla kusur araması uyumu bozar.",
+                "Terazi": "Estetik, lüks, sanat ve gösterişi seven çok şık ve popüler bir çift. Terazi Aslan'ın ne kadar harika olduğunu ona hep hissettirir, Aslan da Terazi'ye romantik ve cömert bir rüya yaşatır.",
+                "Akrep": "İkisi de son derece sabit fikirli, gururlu ve güçlüdür. Güç savaşları, inatlaşmalar ve yüksek tutku bir aradadır; birbirlerine saygı duydukları sürece dışarıdan yıkılması imkansız bir kale inşa ederler.",
+                "Yay": "Heyecan verici, macera dolu, bol kahkahalı ve sınırları zorlayan bir ateş uyumu. Birbirlerinin vizyonunu genişletir, cesaretlendirir ve hayatı dev ve ihtişamlı bir parti gibi yaşamayı başarırlar.",
+                "Oğlak": "Güçlü bir statü çifti; dışarıdan bakıldığında çok başarılı ve saygın görünürler. Ancak işin içine duygular girdiğinde Oğlak'ın soğukkanlılığı, Aslan'ın beklediği ateşi ve coşkuyu söndürebilir.",
+                "Kova": "Zıt burçlar; Kova toplumsal faydayı ve grubu düşünürken, Aslan tamamen kendi krallığına ve bireyselliğine odaklanır. Bu zıt vizyonlar sürekli çatışsa da aralarında çok çekici bir kıvılcım vardır.",
+                "Balık": "Aslan ilişkiyi domine edip parlamak ister, Balık ise sınırlarını kaybedip tamamen verici bir hale bürünür. Bu durum zamanla Balık'ın tükenmesine, Aslan'ın ise bu çabasızlıktan sıkılmasına yol açabilir."
+            },
+            "Başak": {
+                "Koç": "Koç’un ani çıkışları, dağınıklığı ve plansızlığı; her şeyi önceden hesaplamak isteyen Başak’ı çok yorar. Başak sürekli hataları düzeltmeye çalışırken Koç kendini fena halde kısıtlanmış hisseder.",
+                "Boğa": "Mantık, düzen ve üretkenliğin mükemmel uyumu. Birbirlerine gözü kapalı güvenirler; ayakları yere basan, ekonomik ve duygusal olarak güvenli, uzun yıllar sürecek sarsılmaz bir bağdır.",
+                "İkizler": "İkisi de Merkür gezegeninin çocukları olduğu için zihinsel bağları ve sohbetleri muazzamdır. Ancak Başak'ın ciddiyeti ve titizliği, İkizler'in çocuksu ve havai ruhuyla sık sık çatışır.",
+                "Yengeç": "Başak'ın detaylı planları ve pratik çözümleri, Yengeç'in duygusal çalkantılarına güvenli bir liman olur. İkisi de hizmet etmeyi ve sevdiklerine bakmayı sevdiği için çok huzurlu bir hayat kurarlar.",
+                "Aslan": "Aslan övülmek, alkışlanmak ve lüks içinde yaşamak isterken; Başak mütevazılık, sadelik ve sürekli gelişim peşindedir. Beklentiler o kadar zıttır ki birbirlerini tatmin etmekte zorlanırlar.",
+                "Başak": "Aşırı detaycı, kuralcı ve mükemmeliyetçi bir ortam oluşabilir. Evi bir fabrika gibi kusursuz bir düzenle yönetirler ama sürekli birbirlerinde hata aramaktan ilişkinin tadını çıkarmayı unutabilirler.",
+                "Terazi": "Başak her şeyde bir kusur bulup onu onarmaya çalışırken, Terazi gözünü kusurlara kapatıp sadece uyum ve yüzeysel bir barış arar. Hayata yaklaşım biçimleri farklı olduğu için beklentiler uyuşmaz.",
+                "Akrep": "Başak'ın sonsuz sadakati ve şeffaflığı, Akrep'in içindeki o kronik şüpheci zehri tamamen yok eder. Akrep ise Başak'a derinlik katar; birbirlerine çok sadık, analitik ve sarsılmaz bir ikili olurlar.",
+                "Yay": "Başak her adımı planlamak, bütçe yapmak ve garantici yaşamak ister; Yay ise sonunu düşünmeden anı yaşar. Kaos ve düzenin bu zorlu karşılaşması ikisi için de büyük bir sınavdır.",
+                "Oğlak": "Gelecek odaklı, çalışkan, sorumluluk sahibi ve birbirini sürekli yukarı taşıyan kusursuz bir toprak uyumu. Aşkları fırtınalı değildir ama hayatta kalma ve başarma oranları en yüksek çifttir.",
+                "Kova": "Başak gelenekleri, kuralları ve mevcut düzeni korumayı sever; Kova ise tüm o kuralları yıkıp yeni ve ütopik bir sistem inşa etmek ister. Farklı dilleri konuştukları için frekanslarının tutması zordur.",
+                "Balık": "Zıt burçlar; Başak tamamen gerçek dünyada hesap kitap yaparken, Balık rüyalar aleminde ilham peşindedir. Başak Balık'ı topraklayıp hayata bağlar, Balık ise Başak'ın katı ruhunu şefkatle yumuşatır."
+            },
+            "Terazi": {
+                "Koç": "Zıt kutupların muazzam çekimi; Koç 'ben' diyerek öne atılırken, Terazi 'biz' diyerek her şeyi dengelemeye çalışır. Koç'un cesareti Terazi'nin kararsızlığına, Terazi'nin zarafeti Koç'un kabalığına şifa olur.",
+                "Boğa": "İkisini de güzellik ve aşk gezegeni Venüs yönetir; estetik, sanat, moda ve iyi yemek ortak tutkularıdır. Çok hoş bir uyum yakalarlar ama Terazi'nin flörtöz sosyalliği Boğa'yı gizli kıskançlık krizlerine sokabilir.",
+                "İkizler": "Sosyal kelebeklerin muhteşem buluşması; cemiyet hayatının en uyumlu, konuşkan ve vizyoner çifti. Kesintisiz iletişim, ortak hobiler ve birbirlerinin özgürlüklerine saygı ile asla eskimeyen bir ilişki yaşarlar.",
+                "Yengeç": "Yengeç derin duygusal bağlar, evcimenlik ve güvence isterken; Terazi dışarıda olmayı, partileri ve herkesle flörtöz bir bağ kurmayı tercih eder. Yengeç bu mesafeli sosyallik karşısında kendini sevilmemiş hisseder.",
+                "Aslan": "Estetik, lüks, sanat ve gösterişi birleştiren çok şık ve popüler bir çift. Terazi Aslan'ın egosunu çok zarifçe okşar, Aslan da Terazi'ye romantik bir rüya yaşatır; birbirlerini inanılmaz iyi yükseltirler.",
+                "Başak": "Başak sürekli detaylarda kaybolup kusurları yüzeye çıkarırken, Terazi pürüzleri halının altına süpürüp sadece barış ister. Çatışmalardan kaçınan Terazi, Başak'ın eleştiri okları altında ezilebilir.",
+                "Terazi": "Çok zarif, nazik ve adil bir ilişki; asla sesler yükselmez, kimse kimseyi kırmamaya özen gösterir. Ancak ikisi de uyumu bozmamak için gerçek sorunları konuşmaktan kaçar ve ciddi konularda karar vermekte çok zorlanırlar.",
+                "Akrep": "Terazi sorunları tatlı dille ve yüzeysel geçiştirmek ister, Akrep ise dibe inip kriz yaratmaktan beslenir. Akrep'in karanlık tutkusu ve sahiplenme arzusu, Terazi'nin hafif ve uçarı ruhunu hapsedebilir.",
+                "Yay": "Sosyal, yeni yerler keşfetmeyi seven, birbirine entelektüel anlamda ilham veren çok neşeli bir ikili. İlişkiyi çok ciddiye bindirip birbirlerini kurallara boğmadıkları sürece yıllarca flörtöz bir heyecanla yaşayabilirler.",
+                "Oğlak": "Terazi prestij, sosyallik ve tatlı bir uyum peşindeyken; Oğlak disiplin, çok çalışma ve statü peşindedir. Oğlak Terazi'yi fazla havai bulur, Terazi ise Oğlak'ı fazla sıkıcı ve işkolik bularak uzaklaşır.",
+                "Kova": "Muhteşem zihinsel iletişim, ortak idealler, vizyoner fikirler ve bol dostluk barındıran harika bir hava uyumu. Birbirlerini değiştirmeye çalışmazlar ve geleneksel kalıpların dışında çok keyifli bir dünya kurarlar.",
+                "Balık": "İkisi de son derece romantik, nazik ve sanat ruhludur; ancak ikisi de gerçek dünyadaki sorumluluklardan kaçmaya çok meyillidir. Bir kriz anında kimsenin pratik bir adım atmaması ilişkinin kaosla sürüklenmesine neden olabilir."
+            },
+            "Akrep": {
+                "Koç": "İkisi de Mars enerjisi taşıdığı için çok güçlü, tutkulu ve boyun eğmez karakterlerdir. Cinsel ve duygusal çekim çok yüksektir ancak anlaşmazlıklarda ikisi de asla geri adım atmayacağı için ilişki bir savaş alanına dönebilir.",
+                "Boğa": "Zıt ama birbirini ölümüne çeken iki sabit burç. Boğa'nın sükuneti Akrep'in fırtınalarına iyi gelir; tutkulu, inatçı, aşırı sahiplenici ve dış dünyaya kapalı, çok yoğun ve köklü bir bağ inşa ederler.",
+                "İkizler": "Akrep gizem, derinlik ve koşulsuz sadakat ararken; İkizler yüzeysel sohbetler, hafif flörtler ve değişkenlik sever. Akrep’in sorgulayan tavrı İkizler’i kaçırır, İkizler’in rahatlığı Akrep’i delirtir.",
+                "Yengeç": "Kelimelere dökülmeyen, ruhsal ve telepatik bir bağ. Yengeç'in koruyucu anaçlığı Akrep'in güvenini tam olarak kazanır; birbirlerine sonsuz bir sadakat sunar ve dış dünyanın kötülüklerinden korunan aşılmaz bir kale kurarlar.",
+                "Aslan": "İkisi de sabit fikirli, güç tutkunu ve kontrolcü burçlardır. Tutku ve çekim muazzamdır ancak kimin sözünün geçeceği konusunda yaşanan o bitmek bilmez inatlaşmalar, her gün yeni bir dramanın yaşanmasına sebep olabilir.",
+                "Başak": "Başak'ın verdiği güven, şeffaflık ve sadakat, Akrep'in içindeki şüpheci zehri tamamen yok eder. Akrep de Başak'a derin duygular yaşamayı öğretir; birbirlerine çok sadık, sarsılmaz ve stratejik bir ikili olurlar.",
+                "Terazi": "Terazi hayatın aydınlık, estetik ve sosyal yüzünde kalmak ister; Akrep ise karanlıkları, krizleri ve derin sırları deşmeyi sever. Terazi Akrep'i sosyalleştirip yumuşatmaya çalışsa da Akrep bu durumu genellikle 'samimiyetsiz' bulur.",
+                "Akrep": "Çok yoğun, çok tutkulu ve adeta zehirli olabilecek kadar derin bir çift. Birbirlerinin zihnini ve ruhunu okurlar ama en ufak bir güvensizlikte iki tarafın da kindar yapısı ilişkiyi çok tehlikeli bir intikam oyununa dönüştürebilir.",
+                "Yay": "Akrep tamamen sahiplenmek, kontrol etmek ve iç içe geçmek ister; Yay ise ucu açık özgürlük, bağımsızlık ve macera arar. Akrep Yay'ı bir kafese kapatmaya çalıştıkça Yay daha da hızlı kaçar; çok yorucu ve imkansız bir eşleşmedir.",
+                "Oğlak": "Mantık, strateji, sadakat ve güven üzerine kurulu, çok sağlam ve kalıcı bir ilişki. İkisi de hedeflerine kilitlenir, birbirlerini başarıya taşır ve dünyayı birlikte yönetebilecek kadar yenilmez bir takım olurlar.",
+                "Kova": "Akrep yoğun duygular, krizler ve tam bir birleşme ister; Kova ise duygulardan tamamen arınmış bir mantık, toplumsallık ve bağımsızlık. Uzlaşmaları ve birbirlerinin dünyasını kabul etmeleri zodyaktaki en zor şeylerden biridir.",
+                "Balık": "Tam bir ruh eşi eşleşmesi potansiyeli; aralarındaki telepatik ve duygusal bağ kelimelerle anlatılamaz. Akrep Balık'ı gerçek dünyanın acımasızlığından korur, Balık da Akrep'in katı karanlığını sonsuz sevgisiyle aydınlatır."
+            },
+            "Yay": {
+                "Koç": "Tam bir macera arkadaşlığı; dünyayı birlikte fethedebilirler. İkisi de özgürlüğüne düşkün, enerjik ve hevesli olduğu için birbirlerini hiç kısıtlamaz, ilişkide hiç bitmeyen bir ateş ve heyecan yaratırlar.",
+                "Boğa": "Biri evdeki huzurlu koltuğunda oturmayı, diğeri sırt çantasını alıp risklere atılmayı ister. Yay Boğa'nın durağanlığından çok çabuk sıkılır, Boğa ise Yay'ın bu sorumsuz ve plansız hallerine kesinlikle tahammül edemez.",
+                "İkizler": "Zıt burçların muhteşem, meraklı ve neşeli çekimi. İkisi de öğrenmeye, gezmeye ve yeni kültürlere aşıktır; birlikte hem filozof gibi derin entelektüel sohbetler edip hem de çocuk gibi eğlenebilirler.",
+                "Yengeç": "Yay'ın aklına ilk geleni söyleyen dürüst ve patavatsız hali, her şeyi kişisel alan hassas Yengeç'i sürekli ağlatabilir. Yay geniş ufuklara yelken açmak isterken, Yengeç onu evin güvenli limanında tutmaya çalışarak yorar.",
+                "Aslan": "Heyecan verici, macera dolu, bol kahkahalı ve sınırları zorlayan harika bir uyum. Aslan'ın yaratıcılığı ve sıcaklığı Yay'ın vizyonuyla birleşince hayatı dev ve bitmek bilmeyen bir şölen gibi yaşamayı başarırlar.",
+                "Başak": "Başak her adımı detaylıca planlamak, analiz etmek ve riskleri sıfırlamak ister; Yay ise detaylardan nefret eder ve anı yaşar. Kaos ve düzenin bu karşılaşması ikisi için de sürekli birbirini düzelttikleri büyük bir sınavdır.",
+                "Terazi": "Sosyal, flörtöz, estetik ve yeniliklere açık; birbirlerine çok ilham veren neşeli bir ikili. Terazi'nin zarafeti Yay'ın yabaniliğini dengeler, ilişkiyi birbirlerini boğmadan ve kurallara hapsetmeden çok ferah bir seviyede yaşarlar.",
+                "Akrep": "Akrep ilişkiyi kapalı kapılar ardında, derin, takıntılı ve sahiplenici bir şekilde yaşamak isterken; Yay açık havada, özgürce ve bağımsız olmayı seçer. Akrep'in baskısı ve kıskançlığı Yay'ı çok hızlı bir şekilde uzaklaştırır.",
+                "Yay": "İki gezgin ruhun, iki filozofun muhteşem yol arkadaşlığı. Harika anılar biriktirir, birlikte dünyayı gezerler ama sıra ev faturası ödemeye, rutin kurmaya veya ciddi bir kriz yönetmeye gelince ikisi de ortadan kaybolabilir.",
+                "Oğlak": "Yay kurallara isyan eder ve asla kısıtlanamaz; Oğlak ise disiplin, kural, gelenek ve statü peşindedir. Oğlak Yay'ı ciddiyetsiz bir çocuk gibi görürken, Yay Oğlak'ı hayatın eğlencesini kaçıran sıkıcı bir gardiyan gibi görür.",
+                "Kova": "İsyankar, vizyoner, ufku çok geniş ve geleceğe dönük süper eğlenceli bir eşleşme. Klasik ve sıkıcı evlilik kalıplarına sığmazlar; hem çok iyi arkadaş hem de birbirine sürekli ilham veren sıradışı aşıklar olurlar.",
+                "Balık": "İkisini de eski astrolojide Jüpiter yönetir; inanç, felsefe, merhamet ve büyük idealler konusunda çok iyi anlaşıp derin bağ kurarlar. Ancak ikisi de pratik gerçeklikten o kadar uzaktır ki hayatı organize etmekte ciddi şekilde bocalarlar."
+            },
+            "Oğlak": {
+                "Koç": "İkisi de liderlik etmek, yönetmek ve kendi kurallarını dikte etmek ister. Ortak iş hedefleri varsa harika bir şirket kurabilirler ama aşkta iki inatçı keçinin sürekli bir güç savaşı vermesi oldukça yorucu bir dinamiktir.",
+                "Boğa": "Maddiyat, statü, sadakat ve gelecek güvencesi odaklı; çok sağlam ve yıkılması güç bir iş birliği. Sürprizler veya fırtınalı aşk gösterileri az olsa da, birbirlerine duydukları sarsılmaz güvenle yaşlanırlar.",
+                "İkizler": "Ciddiyet ve eğlence çatışması. Oğlak hayatı bir proje gibi planlayıp adım adım zirveye tırmanmaya çalışırken, İkizler'in anlık kararları ve daldan dala atlaması Oğlak'ın tüm düzenli sistemini çökertir.",
+                "Yengeç": "Zıt kutuplar; Oğlak dış dünyada kuralcı bir otorite figürüyken, Yengeç ev içinde yumuşak ve şefkatli bir ebeveyndir. Eğer birbirlerine saygı duyup görev paylaşımı yaparlarsa çok güçlü ve destekleyici bir aile kurarlar.",
+                "Aslan": "İkisi de toplum içinde güçlü görünmeyi, saygı görmeyi ve hep zirvede olmayı sever. Birlikte dışarıdan kusursuz ve saygın bir 'statü çifti' imajı çizerler, ancak kapalı kapılar ardında romantizmi sıcak tutmaları çok çaba ister.",
+                "Başak": "Gelecek odaklı, detayları atlamayan, sorumluluk sahibi ve birbirini sürekli başarıya taşıyan kusursuz bir toprak uyumu. Aşkları devasa fırtınalar koparmaz ama birlikte tüm zorlukların üstesinden gelebilecek bir dayanıklılıktadırlar.",
+                "Terazi": "Terazi popülerlik, tatlı sohbetler ve estetik peşindeyken; Oğlak disiplin, çok çalışma ve ciddi bir sonuç alma peşindedir. Oğlak Terazi'nin havailiğinden, Terazi ise Oğlak'ın buz gibi donukluğundan zamanla sıkılabilir.",
+                "Akrep": "Mantık, strateji, sarsılmaz sadakat ve güç üzerine kurulu çok derin ve dayanıklı bir ilişki. İkisi de kolay kolay güvenmez ama birbirlerinin sınırlarına girdiklerinde dünyayı birlikte yönetebilecek karanlık ve tutkulu bir bağ kurarlar.",
+                "Yay": "Oğlak disiplin, kural ve net sınırlar ister; Yay ise özgürlük, macera ve limitsizlik arar. Oğlak'ın garantici tavrı Yay'ın hevesini kırarken, Yay'ın sürekli plansız programsız yaşaması Oğlak'a panik atak yaşatır.",
+                "Oğlak": "Zodyak'ın 'CEO' çifti; son derece çalışkan, saygın, hırslı ve ciddiler. Birbirlerinin kariyer hedeflerine sonsuz destek olurlar ama ilişkiyi bir yönetim kurulu toplantısı gibi yürütüp duygusal paylaşımları ihmal etme riskleri çok yüksektir.",
+                "Kova": "Oğlak gelenekleri, eski sistemleri ve kurumları korumaya çalışırken; Kova onları kökünden yıkıp yenisini inşa etmeye programlıdır. Anlaşmaları için birbirlerinin taban tabana zıt dünyalarına devasa bir saygı duymaları şarttır.",
+                "Balık": "Oğlak'ın sert, rasyonel ve duvarlı dış kabuğunu, Balık'ın koşulsuz ve sınırsız şefkati eritir. Oğlak Balık'ı topraklayıp hayallerini gerçeğe dönüştürürken, Balık da Oğlak'a hayatta işten başka manevi güzellikler de olduğunu öğretir."
+            },
+            "Kova": {
+                "Koç": "Özgürlükçü, enerjik ve kalıplara sığmayan orijinal bir çift. Kova'nın sıradışı fikirleri Koç'un eyleme geçme cesaretiyle gerçeğe dökülür; aralarında çok sağlam bir arkadaşlık ve her anı sürprizlerle dolu dinamik bir aşk vardır.",
+                "Boğa": "Biri tamamen geleneksel, sahip olma odaklı ve rutine aşıkken; diğeri yenilikçi, mülkiyeti reddeden ve değişime aşıktır. İnatçı doğaları yüzünden birbirlerinin dünyasına ve hızına uyum sağlamakta inanılmaz zorlanırlar.",
+                "İkizler": "Entelektüel uyum zirve yapar; modern, zihinsel olarak çok aktif ve hiçbir kısıtlamanın olmadığı özgür bir ilişki. Birbirlerinin en yakın arkadaşı olup her konuyu sabahlara kadar tartışabilirler, aşkları mantık ve zekaya dayanır.",
+                "Yengeç": "Kova fazla rasyonel, toplumsal meselelere odaklı ve bireysel sınırlarında mesafelidir; Yengeç ise aşırı şefkatli ve ailesine düşkündür. Kova'nın bu buz gibi mantığı, Yengeç'in sevgisiz hissetmesine ve içine kapanmasına yol açar.",
+                "Aslan": "Zıt burçlar; Kova kolektif faydayı, eşitliği ve grubu düşünürken, Aslan tamamen kendi tahtına ve merkezde olmaya odaklanır. Farklı vizyonlara sahip olsalar da aralarındaki inatçı çekim çok güçlü, öğretici ve dönüştürücüdür.",
+                "Başak": "Başak kuralları harfiyen uygulamak, sistemde kalmak ve detayları düzeltmek ister; Kova ise sistemi komple hackleyip baştan yenilik getirmek ister. Dünyayı algılayış biçimleri o kadar farklıdır ki ortak paydada buluşmak büyük efor ister.",
+                "Terazi": "Muhteşem zihinsel iletişim, ortak idealler, vizyoner fikirler ve bol estetik barındıran harika bir hava uyumu. Geleneksel kıskançlıklardan ve baskılardan uzak, karşılıklı saygı ve dostluğa dayanan çok modern ve keyifli bir dünya kurarlar.",
+                "Akrep": "Akrep yoğun krizler, tutkulu sahiplenme ve tam bir birleşme ister; Kova ise duygulardan uzak mantık, bireysellik ve hava alabileceği boşluklar arar. Akrep'in baskısı Kova'yı boğar, Kova'nın mesafesi Akrep'i delirtir; çok yorucu bir denklemdir.",
+                "Yay": "İsyankar, vizyoner, sürekli keşfetmeye açık ve geleceğe dönük süper eğlenceli bir eşleşme. Klasik evlilik kalıplarına asla sığmazlar; birbirlerinin kişisel alanlarına sonsuz saygı duyarak hayatı dev bir macera ve deney gibi yaşarlar.",
+                "Oğlak": "Oğlak kuralları, hiyerarşiyi ve geçmişin güvenilir tecrübelerini korumaya çalışırken; Kova sürekli geleceğe bakar ve hiyerarşiye isyan bayrağını çeker. Gelenek ve yeniliğin bu sert çatışması, anlaşmalarını sürekli bir saygı sınavına sokar.",
+                "Kova": "İki dahi, asi, sıra dışı ve özgür ruh bir arada. Bağları fikirsel olarak çok güçlü ve anlayışlıdır ama o kadar rasyonel ve 'kanka' modunda yaşayabilirler ki; ilişkinin romantizm ve bedensel tutku kısmı tamamen eksik kalabilir.",
+                "Balık": "Kova insanlığı ve toplumu büyük mantıklı sistemlerle kurtarmak ister, Balık ise bireyleri koşulsuz sevgi ve fedakarlıkla iyileştirmek. Hedefleri yüce ve yardımsever olsa da, Kova'nın birebirdeki soğukluğu Balık'ın hassas dünyasını dondurabilir."
+            },
+            "Balık": {
+                "Koç": "Koç’un sabırsız, rekabetçi ve sert doğası, Balık’ın narin, barışçıl ve hayalperest ruhunu kolayca incitebilir. Bu ilişkinin yürümesi için Koç'un sesini alçaltıp şefkat göstermeyi, Balık'ın da kendini ezdirmemeyi öğrenmesi şarttır.",
+                "Boğa": "Çok romantik, şefkatli ve huzur dolu bir bağ. Boğa, Balık'ın kaotik ve değişken dünyasına güvenli ve somut bir zemin sunarken; Balık da Boğa'nın maddesel ruhuna peri masalı gibi bir romantizm ve manevi bir derinlik katar.",
+                "İkizler": "İkisi de çok değişken, uyum sağlamaya çalışan ama hedefsiz burçlardır. Balık duygusal bir bağlanma ve derin bir anlam ararken İkizler bunu mantıklı bahaneler ve esprilerle geçiştirir; sonuç kafa karıştırıcı ve tatminsiz bir ilişkidir.",
+                "Yengeç": "Masalsı, romantik ve tamamen sezgiler üzerine kurulu muazzam bir aşk. Birbirlerinin en ufak kalp kırıklığını hisseder, yaralarını sarar ve dış dünyadan tamamen izole olarak sadece kendilerine ait rüya gibi bir fanusta yaşarlar.",
+                "Aslan": "Aslan sahnede parlayıp ilişkiyi domine etmek isterken, Balık kendini feda edip görünmez olmayı ve ona hizmet etmeyi seçebilir. Eğer denge kurulmazsa Aslan ego patlamaları yaşar, Balık ise kendini sürekli tükenmiş bir kurban gibi hisseder.",
+                "Başak": "Zıt burçların şifalı dengesi; Başak tamamen gerçek dünyada hesap kitap yapıp detaylara boğulurken, Balık rüyalar aleminde ilham arar. Başak Balık'ın dağınık hayatını düzene sokar, Balık ise Başak'ın eleştirel sertliğini merhametiyle adeta eritir.",
+                "Terazi": "İkisi de son derece romantik, nazik ve sanat ruhludur; birbirlerine asla seslerini yükseltmezler. Ancak sorun şu ki, ikisi de kriz anında sorumluluk almaktan ve gerçeklerle yüzleşmekten kaçtığı için ilişki zamanla yönsüz bir kaosa sürüklenebilir.",
+                "Akrep": "Kelimelere dökülmeyen telepatik ve adeta ruhani bir bağ. Tam bir ruh eşi potansiyeli; Akrep Balık'ı dış dünyanın tüm acımasızlığından koruyan sert bir kalkan olurken, Balık da Akrep'in içindeki şüpheci ve karanlık şeytanları sevgisiyle evcilleştirir.",
+                "Yay": "İkisini de eski astrolojide Jüpiter yönetir; inanç, felsefe, merhamet ve büyük idealler konusunda çok iyi anlaşıp vizyoner bir bağ kurarlar. Ancak ikisi de pratik gerçeklikten o kadar uzaktır ki, hayatın fatura ödemek gibi sıkıcı kısımlarında fena çuvallarlar.",
+                "Oğlak": "Oğlak'ın sert, işkolik ve kuralcı dış kabuğunu, Balık'ın koşulsuz şefkati sular altında bırakıp yumuşatır. Oğlak Balık'ın darmadağınık hayatına somut bir iskelet verirken, Balık da Oğlak'a hissetmenin güzelliğini öğretir; harika bir tamamlanmadır.",
+                "Kova": "Kova eşitlik, mantık ve toplumsal meselelerle ilgilenirken, Balık kendini tamamen bireysel acılara ve duygusal derinliğe adar. Kova'nın o buz gibi rasyonel ve mesafeli duvarı, Balık'ın sevgi dolu sularında çırpınmasına ve boğulmasına neden olabilir.",
+                "Balık": "Çok fazla hayal dünyası, sanatsal ilham ve bitmek bilmeyen devasa bir duygu seli. Birbirlerini çok derinlemesine anlarlar ancak ikisi de gerçeklikten tamamen koptuğu için, hayatın getirdiği zorunluluklar karşısında beraberce savrulup gidebilirler."
+            }
+        };
+
+        const burclarDizisi = ["Koç", "Boğa", "İkizler", "Yengeç", "Aslan", "Başak", "Terazi", "Akrep", "Yay", "Oğlak", "Kova", "Balık"];
+
+        // Tarihten burc indeksini bulan algoritma
+        function burcIndeksiBul(tarihDegeri) {
+            const tarih = new Date(tarihDegeri);
+            const ay = tarih.getMonth() + 1; 
+            const gun = tarih.getDate();
+
+            if ((ay == 3 && gun >= 21) || (ay == 4 && gun <= 20)) return 0; // Koç
+            if ((ay == 4 && gun >= 21) || (ay == 5 && gun <= 20)) return 1; // Boğa
+            if ((ay == 5 && gun >= 21) || (ay == 6 && gun <= 21)) return 2; // İkizler
+            if ((ay == 6 && gun >= 22) || (ay == 7 && gun <= 22)) return 3; // Yengeç
+            if ((ay == 7 && gun >= 23) || (ay == 8 && gun <= 22)) return 4; // Aslan
+            if ((ay == 8 && gun >= 23) || (ay == 9 && gun <= 22)) return 5; // Başak
+            if ((ay == 9 && gun >= 23) || (ay == 10 && gun <= 22)) return 6; // Terazi
+            if ((ay == 10 && gun >= 23) || (ay == 11 && gun <= 21)) return 7; // Akrep
+            if ((ay == 11 && gun >= 22) || (ay == 12 && gun <= 21)) return 8; // Yay
+            if ((ay == 12 && gun >= 22) || (ay == 1 && gun <= 19)) return 9; // Oğlak
+            if ((ay == 1 && gun >= 20) || (ay == 2 && gun <= 18)) return 10; // Kova
+            if ((ay == 2 && gun >= 19) || (ay == 3 && gun <= 20)) return 11; // Balık
+            return 0;
+        }
+
+        // Forma basıldığında çalışacak kod
+        document.getElementById('sinastri-form').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+
+            const isim1 = document.getElementById('isim1').value;
+            const isim2 = document.getElementById('isim2').value;
+            
+            const index1 = burcIndeksiBul(document.getElementById('tarih1').value);
+            const index2 = burcIndeksiBul(document.getElementById('tarih2').value);
+
+            const burc1 = burclarDizisi[index1];
+            const burc2 = burclarDizisi[index2];
+
+            const seninYorumun = uyumVeritabani[burc1][burc2];
+
+            document.getElementById('burclar-ozet').textContent = `${isim1} (${burc1}) ✨ ${isim2} (${burc2})`;
+            document.getElementById('uyum-yorumu').textContent = seninYorumun;
+            
+            document.getElementById('sonuc-ekrani').style.display = "block";
+            document.getElementById('sonuc-ekrani').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

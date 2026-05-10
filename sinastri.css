@@ -1,0 +1,153 @@
+/* ==================================================
+SİNASTRİ (UYUM HARİTASI) SAYFASI ÖZEL TASARIMI
+================================================== */
+
+/* Genel Sayfa Ayarları */
+.sinastri-body {
+    background-color: #0B0C10;
+    color: #C5C6C7;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Geri Dönüş Linki */
+.back-link-container {
+    padding: 20px 50px;
+}
+
+.back-link {
+    color: #F2A900;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.back-link:hover {
+    color: #d19200;
+}
+
+/* İçerik Kapsayıcısı */
+.sinastri-wrapper {
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    min-height: 80vh;
+}
+
+/* Başlıklar */
+.sinastri-title {
+    text-align: center;
+    color: #F2A900;
+    font-family: 'Cinzel', serif;
+    font-size: 40px;
+}
+
+.sinastri-desc {
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+/* Form Kartları ve Grid Düzeni */
+.sinastri-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.kisi-karti {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid #F2A900;
+    width: 350px;
+}
+
+.kisi-karti h3 {
+    color: #F2A900;
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Cinzel', serif;
+}
+
+/* Form Elemanları (Input & Label) */
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    color: #a0a2a5;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background: #0B0C10;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #F2A900;
+}
+
+/* Hesapla Butonu */
+.hesapla-btn {
+    width: 100%;
+    padding: 15px;
+    margin-top: 30px;
+    background-color: #F2A900;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.3s;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.hesapla-btn:hover {
+    background-color: #d19200;
+    transform: scale(1.02);
+}
+
+/* Sonuç Ekranı Kutusu */
+.sonuc-kutusu {
+    margin-top: 50px;
+    text-align: center;
+    background: rgba(242, 169, 0, 0.05);
+    padding: 40px;
+    border-radius: 20px;
+    border: 2px dashed #F2A900;
+}
+
+/* Dinamik Sonuç İçerikleri */
+#burclar-ozet {
+    color: #fff;
+    margin-bottom: 20px;
+    font-size: 22px;
+}
+
+#uyum-yuzdesi {
+    font-size: 30px;
+    color: #F2A900;
+    margin-bottom: 15px;
+    font-family: 'Cinzel', serif;
+}
+
+#uyum-yorumu {
+    font-size: 18px;
+    line-height: 1.8;
+    margin-top: 20px;
+    color: #E0E0E0;
+}

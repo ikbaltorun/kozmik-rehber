@@ -1,0 +1,44 @@
+/* --- YORUMLAR SAYFASI ÖZEL TASARIMI --- */
+.yorum-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.yorum-karti {
+    width: calc(25% - 20px); 
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(242, 169, 0, 0.2);
+    border-radius: 15px;
+    padding: 25px;
+    transition: transform 0.5s, border-color 0.5s;/*imleç üstüne gelince*/
+}
+
+.yorum-karti:hover {
+    transform: translateY(-0px);
+    border-color: #F2A900;
+}
+
+.yorum-karti h3 {
+    font-size: 24px;
+    color: #F2A900;
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(242, 169, 0, 0.3);
+    padding-bottom: 10px;
+}
+
+.yorum-karti h4 {
+    font-size: 18px;
+    color: #fff;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.yorum-karti p {
+    font-size: 16px;
+    color: #C5C6C7;
+    line-height: 1.5;
+}
