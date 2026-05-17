@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Kozmik Rehber | Tarot Falı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="tarotfali.css">
+</head>
+<body class="tarot-body">
+
+    <nav class="tarot-nav">
+        <a href="itpproje.html" class="back-btn">← Ana Sayfaya Dön</a>
+        <div class="logo">Kozmik Rehber</div>
+    </nav>
+
+    <div class="container">
+        <h1 class="tarot-title">Tarot Kartı Açılımı</h1>
+        <p class="tarot-subtitle">Zihnini boşalt, bir soruya odaklan ve kartların enerjisine güven.</p>
+
+        <div class="selection">
+            <label>Kaç kart seçmek istiyorsun?</label>
+            <select id="cardCount">
+                <option value="1">1 Kart (Günün Enerjisi)</option>
+                <option value="3">3 Kart (Geçmiş - Şimdi - Gelecek)</option>
+                <option value="5">5 Kart (Derin Analiz)</option>
+            </select>
+            <button class="hesapla-btn" onclick="startReading()">Kartları Aç ✨</button>
+        </div>
+
+        <div id="cardsArea" class="cards-area"></div>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <script src="tarotfali.js"></script>
+</body>
+</html>

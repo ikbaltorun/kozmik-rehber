@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sinastri - Uyum Haritası</title>
+    <title>Sinastri - Uyum Haritası ✨</title>
     <link rel="stylesheet" href="sinastri.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
 </head>
@@ -30,6 +30,10 @@
                         <label>Doğum Tarihi</label>
                         <input type="date" id="tarih1" required>
                     </div>
+                    <div class="input-group">
+                        <label>Doğum Saati (Tahmini)</label>
+                        <input type="time" id="saat1" required>
+                    </div>
                 </div>
 
                 <div class="kisi-karti">
@@ -42,15 +46,39 @@
                         <label>Doğum Tarihi</label>
                         <input type="date" id="tarih2" required>
                     </div>
+                    <div class="input-group">
+                        <label>Doğum Saati (Tahmini)</label>
+                        <input type="time" id="saat2" required>
+                    </div>
                 </div>
 
             </div>
             <button type="submit" class="hesapla-btn">Kozmik Uyumu Hesapla ✨</button>
         </form>
 
+        <div id="kozmik-yukleme" class="yukleme-ekrani" style="display: none;">
+            <div class="kozmik-loading"></div>
+            <p>Evrenin derinliklerine soruluyor, elementler karşılaştırılıyor...</p>
+        </div>
+
         <div id="sonuc-ekrani" class="sonuc-kutusu" style="display: none;">
+            
+            <div id="kozmik-patlama-alani" class="patlama-sahnesi">
+                <div id="element-orb1" class="element-orb orb-left"></div>
+                <div id="element-orb2" class="element-orb orb-right"></div>
+                <div id="merkez-patlama" class="patlama-flash"></div> </div>
+            <div id="kalici-elementler" style="opacity: 0; font-size: 24px; font-family: 'Cinzel', serif; color: #fff; margin-top: -30px; margin-bottom: 25px; text-shadow: 1px 1px 5px rgba(0,0,0,0.5);"></div>
             <h3 id="burclar-ozet"></h3>
-            <h2 id="uyum-yuzdesi">✨ Kozmik Analiz ✨</h2>
+            
+            <div class="uyum-yuzdesi-alani">
+                <h2>✨ Kozmik Uyumunuz ✨</h2>
+                <div class="progress-container">
+                    <div id="progress-bar" class="progress-bar">
+                        <span id="progress-text">0%</span>
+                    </div>
+                </div>
+            </div>
+            
             <p id="uyum-yorumu"></p>
         </div>
     </section>
@@ -213,7 +241,7 @@
                 "Balık": "Kova insanlığı ve toplumu büyük mantıklı sistemlerle kurtarmak ister, Balık ise bireyleri koşulsuz sevgi ve fedakarlıkla iyileştirmek. Hedefleri yüce ve yardımsever olsa da, Kova'nın birebirdeki soğukluğu Balık'ın hassas dünyasını dondurabilir."
             },
             "Balık": {
-                "Koç": "Koç’un sabırsız, rekabetçi ve sert doğası, Balık’ın narin, barışçıl ve hayalperest ruhunu kolayca incitebilir. Bu ilişkinin yürümesi için Koç'un sesini alçaltıp şefkat göstermeyi, Balık'ın da kendini ezdirmemeyi öğrenmesi şarttır.",
+                "Koç": "Koç’un sabırsız, rekabetçi ve sert doğası, Balık’ın narin, barışçıl ve hayalperest ruhunu kolayca incitebilir. Bu ilişkinin yürümesi için Koç'un sesini alçaltıp şefkat göstermeyi, Balık'ın da sınır çizmeyi öğrenmesi şarttır.",
                 "Boğa": "Çok romantik, şefkatli ve huzur dolu bir bağ. Boğa, Balık'ın kaotik ve değişken dünyasına güvenli ve somut bir zemin sunarken; Balık da Boğa'nın maddesel ruhuna peri masalı gibi bir romantizm ve manevi bir derinlik katar.",
                 "İkizler": "İkisi de çok değişken, uyum sağlamaya çalışan ama hedefsiz burçlardır. Balık duygusal bir bağlanma ve derin bir anlam ararken İkizler bunu mantıklı bahaneler ve esprilerle geçiştirir; sonuç kafa karıştırıcı ve tatminsiz bir ilişkidir.",
                 "Yengeç": "Masalsı, romantik ve tamamen sezgiler üzerine kurulu muazzam bir aşk. Birbirlerinin en ufak kalp kırıklığını hisseder, yaralarını sarar ve dış dünyadan tamamen izole olarak sadece kendilerine ait rüya gibi bir fanusta yaşarlar.",
@@ -229,48 +257,178 @@
         };
 
         const burclarDizisi = ["Koç", "Boğa", "İkizler", "Yengeç", "Aslan", "Başak", "Terazi", "Akrep", "Yay", "Oğlak", "Kova", "Balık"];
+        
+        const burcElementVerileri = {
+            "Koç": { ad: "Ateş", emoji: "☀️", cls: "ateş-orb" }, "Aslan": { ad: "Ateş", emoji: "☀️", cls: "ateş-orb" }, "Yay": { ad: "Ateş", emoji: "☀️", cls: "ateş-orb" },
+            "Boğa": { ad: "Toprak", emoji: "⛰️", cls: "toprak-orb" }, "Başak": { ad: "Toprak", emoji: "⛰️", cls: "toprak-orb" }, "Oğlak": { ad: "Toprak", emoji: "⛰️", cls: "toprak-orb" },
+            "İkizler": { ad: "Hava", emoji: "💨", cls: "hava-orb" }, "Terazi": { ad: "Hava", emoji: "💨", cls: "hava-orb" }, "Kova": { ad: "Hava", emoji: "💨", cls: "hava-orb" },
+            "Yengeç": { ad: "Su", emoji: "💧", cls: "su-orb" }, "Akrep": { ad: "Su", emoji: "💧", cls: "su-orb" }, "Balık": { ad: "Su", emoji: "💧", cls: "su-orb" }
+        };
 
-        // Tarihten burc indeksini bulan algoritma
         function burcIndeksiBul(tarihDegeri) {
             const tarih = new Date(tarihDegeri);
             const ay = tarih.getMonth() + 1; 
             const gun = tarih.getDate();
-
-            if ((ay == 3 && gun >= 21) || (ay == 4 && gun <= 20)) return 0; // Koç
-            if ((ay == 4 && gun >= 21) || (ay == 5 && gun <= 20)) return 1; // Boğa
-            if ((ay == 5 && gun >= 21) || (ay == 6 && gun <= 21)) return 2; // İkizler
-            if ((ay == 6 && gun >= 22) || (ay == 7 && gun <= 22)) return 3; // Yengeç
-            if ((ay == 7 && gun >= 23) || (ay == 8 && gun <= 22)) return 4; // Aslan
-            if ((ay == 8 && gun >= 23) || (ay == 9 && gun <= 22)) return 5; // Başak
-            if ((ay == 9 && gun >= 23) || (ay == 10 && gun <= 22)) return 6; // Terazi
-            if ((ay == 10 && gun >= 23) || (ay == 11 && gun <= 21)) return 7; // Akrep
-            if ((ay == 11 && gun >= 22) || (ay == 12 && gun <= 21)) return 8; // Yay
-            if ((ay == 12 && gun >= 22) || (ay == 1 && gun <= 19)) return 9; // Oğlak
-            if ((ay == 1 && gun >= 20) || (ay == 2 && gun <= 18)) return 10; // Kova
-            if ((ay == 2 && gun >= 19) || (ay == 3 && gun <= 20)) return 11; // Balık
+            if ((ay == 3 && gun >= 21) || (ay == 4 && gun <= 20)) return 0;
+            if ((ay == 4 && gun >= 21) || (ay == 5 && gun <= 20)) return 1;
+            if ((ay == 5 && gun >= 21) || (ay == 6 && gun <= 21)) return 2;
+            if ((ay == 6 && gun >= 22) || (ay == 7 && gun <= 22)) return 3;
+            if ((ay == 7 && gun >= 23) || (ay == 8 && gun <= 22)) return 4;
+            if ((ay == 8 && gun >= 23) || (ay == 9 && gun <= 22)) return 5;
+            if ((ay == 9 && gun >= 23) || (ay == 10 && gun <= 22)) return 6;
+            if ((ay == 10 && gun >= 23) || (ay == 11 && gun <= 21)) return 7;
+            if ((ay == 11 && gun >= 22) || (ay == 12 && gun <= 21)) return 8;
+            if ((ay == 12 && gun >= 22) || (ay == 1 && gun <= 19)) return 9;
+            if ((ay == 1 && gun >= 20) || (ay == 2 && gun <= 18)) return 10;
+            if ((ay == 2 && gun >= 19) || (ay == 3 && gun <= 20)) return 11;
             return 0;
         }
 
-        // Forma basıldığında çalışacak kod
+        function yukselenIndeksiBul(gunesIndeksi, saatDegeri) {
+            let saat = parseInt(saatDegeri.split(":")[0]); 
+            if (saat < 6) { saat += 24; }
+            let kaydirmaMiktari = Math.floor((saat - 6) / 2);
+            let yukselenIndex = gunesIndeksi + kaydirmaMiktari;
+            return yukselenIndex % 12;
+        }
+
         document.getElementById('sinastri-form').addEventListener('submit', function(e) {
             e.preventDefault(); 
-
+            
+            // Elemanları seç
             const isim1 = document.getElementById('isim1').value;
             const isim2 = document.getElementById('isim2').value;
+            const tarih1 = document.getElementById('tarih1').value;
+            const tarih2 = document.getElementById('tarih2').value;
+            const saat1 = document.getElementById('saat1').value;
+            const saat2 = document.getElementById('saat2').value;
+
+            if (!tarih1 || !tarih2 || !saat1 || !saat2) { alert("Lütfen tüm bilgileri girin!"); return; }
+
+            // --- 1. SİHİRLİ DOKUNUŞ: ANİMASYONLARI SIFIRLAMA ---
+            // Bu kısım sayesinde art arda form doldurulduğunda animasyonlar baştan tetiklenir
+            const orb1 = document.getElementById('element-orb1');
+            const orb2 = document.getElementById('element-orb2');
+            const flash = document.getElementById('merkez-patlama');
+            const kalici = document.getElementById('kalici-elementler');
+            const burclarOzet = document.getElementById('burclar-ozet');
+            const yuzdeAlani = document.querySelector('.uyum-yuzdesi-alani');
+            const uyumYorumu = document.getElementById('uyum-yorumu');
+
+            // Hepsinden animasyonu kaldır
+            orb1.style.animation = "none";
+            orb2.style.animation = "none";
+            flash.style.animation = "none";
+            kalici.style.animation = "none";
+            burclarOzet.style.animation = "none";
+            yuzdeAlani.style.animation = "none";
+            uyumYorumu.style.animation = "none";
             
-            const index1 = burcIndeksiBul(document.getElementById('tarih1').value);
-            const index2 = burcIndeksiBul(document.getElementById('tarih2').value);
+            // Eski CSS renk sınıflarını temizle
+            orb1.className = "element-orb orb-left";
+            orb2.className = "element-orb orb-right";
 
-            const burc1 = burclarDizisi[index1];
-            const burc2 = burclarDizisi[index2];
+            // Tarayıcıyı zorla yenileyerek temizliği kaydet (Reflow Hilesi)
+            void orb1.offsetWidth; 
 
-            const seninYorumun = uyumVeritabani[burc1][burc2];
+            // --- 2. YÜKLEME EKRANI ---
+            document.getElementById('sinastri-form').style.display = "none";
+            document.getElementById('sonuc-ekrani').style.display = "none";
+            const yuklemeEkrani = document.getElementById('kozmik-yukleme');
+            yuklemeEkrani.style.display = "block";
+            yuklemeEkrani.scrollIntoView({ behavior: 'smooth' });
 
-            document.getElementById('burclar-ozet').textContent = `${isim1} (${burc1}) ✨ ${isim2} (${burc2})`;
-            document.getElementById('uyum-yorumu').textContent = seninYorumun;
-            
-            document.getElementById('sonuc-ekrani').style.display = "block";
-            document.getElementById('sonuc-ekrani').scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => {
+                const gunesIndex1 = burcIndeksiBul(tarih1);
+                const gunesIndex2 = burcIndeksiBul(tarih2);
+                const burc1 = burclarDizisi[gunesIndex1];
+                const burc2 = burclarDizisi[gunesIndex2];
+
+                yuklemeEkrani.style.display = "none";
+                const sonucEkrani = document.getElementById('sonuc-ekrani');
+                sonucEkrani.style.display = "block";
+
+                // --- 3. ÇARPIŞMA ŞOVU ---
+                const dataEl1 = burcElementVerileri[burc1];
+                const dataEl2 = burcElementVerileri[burc2];
+                flash.style.opacity = "0";
+
+                setTimeout(() => {
+                    orb1.classList.add(dataEl1.cls);
+                    orb2.classList.add(dataEl2.cls);
+                    orb1.innerHTML = `<span>${dataEl1.ad}</span>`;
+                    orb2.innerHTML = `<span>${dataEl2.ad}</span>`;
+
+                    // Yeniden animasyon ver
+                    orb1.style.animation = "meetAtCenterLeft 2s ease-in-out forwards";
+                    orb2.style.animation = "meetAtCenterRight 2s ease-in-out forwards";
+                }, 100);
+
+                setTimeout(() => {
+                    flash.style.animation = "flashBurst 0.6s ease-out forwards";
+                }, 1800);
+
+                // --- 4. SONUÇLARI HAZIRLA VE GÖSTER ---
+                const yukselenIndex1 = yukselenIndeksiBul(gunesIndex1, saat1);
+                const yukselenIndex2 = yukselenIndeksiBul(gunesIndex2, saat2);
+                const yukselen1 = burclarDizisi[yukselenIndex1];
+                const yukselen2 = burclarDizisi[yukselenIndex2];
+                const seninYorumun = uyumVeritabani[burc1][burc2];
+
+                const indexFarki = Math.abs(gunesIndex1 - gunesIndex2);
+                let uyumYuzdesi = 100 - (indexFarki * 6); 
+                if (uyumYuzdesi < 12) uyumYuzdesi = 18; 
+                if (burc1 === burc2) uyumYuzdesi = 95;
+
+                // Sonuçları başta gizle
+                burclarOzet.style.opacity = "0";
+                yuzdeAlani.style.opacity = "0";
+                uyumYorumu.style.opacity = "0";
+
+                // Patlamadan hemen sonra göster (2.3 sn sonra)
+                setTimeout(() => {
+                    kalici.innerHTML = `${dataEl1.ad} ${dataEl1.emoji} <span style="color:#F2A900; margin: 0 15px;">✨</span> ${dataEl2.ad} ${dataEl2.emoji}`;
+                    
+                    burclarOzet.innerHTML = 
+                        `${isim1} <br><span style="font-size:16px; color:#C5C6C7;">(${burc1} ☀️ | ${yukselen1} 🌅)</span> <br><br> ✨ <br><br> 
+                         ${isim2} <br><span style="font-size:16px; color:#C5C6C7;">(${burc2} ☀️ | ${yukselen2} 🌅)</span>`;
+                    
+                    uyumYorumu.textContent = seninYorumun;
+
+                    // Fade in animasyonlarını başlat
+                    kalici.style.animation = "resultsFadeIn 1s ease-out forwards";
+                    burclarOzet.style.animation = "resultsFadeIn 1s ease-out forwards";
+                    yuzdeAlani.style.animation = "resultsFadeIn 1s ease-out forwards";
+                    uyumYorumu.style.animation = "resultsFadeIn 1s ease-out forwards";
+
+                    // Yüzdelik Bar Animasyonu
+                    const progressBar = document.getElementById('progress-bar');
+                    const progressText = document.getElementById('progress-text');
+                    let currentPercent = 0;
+                    progressBar.style.width = '0%'; 
+
+                    const fillBar = setInterval(() => {
+                        if (currentPercent >= uyumYuzdesi) {
+                            clearInterval(fillBar);
+                            progressText.innerHTML = `<strong>${uyumYuzdesi}%</strong>`;
+                            progressBar.style.width = `${uyumYuzdesi}%`;
+                        } else {
+                            currentPercent++;
+                            progressText.innerText = `${currentPercent}%`;
+                            let widthIncrement = (uyumYuzdesi - currentPercent) / 5;
+                            progressBar.style.width = `${currentPercent + widthIncrement}%`;
+                        }
+                    }, 20);
+
+                    document.getElementById('sonuc-ekrani').scrollIntoView({ behavior: 'smooth' });
+                    
+                    setTimeout(() => {
+                        document.getElementById('sinastri-form').style.display = "block";
+                    }, 10000); 
+
+                }, 2300); 
+
+            }, 2500); 
         });
     </script>
 </body>

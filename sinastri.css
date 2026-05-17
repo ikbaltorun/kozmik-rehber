@@ -1,17 +1,19 @@
 /* ==================================================
-SİNASTRİ (UYUM HARİTASI) SAYFASI ÖZEL TASARIMI
-================================================== */
+   SİNASTRİ SAYFASI TÜM TASARIMI VE KOZMİK ANİMASYONLAR
+   ================================================== */
 
-/* Genel Sayfa Ayarları */
 .sinastri-body {
     background-color: #0B0C10;
     color: #C5C6C7;
     font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    overflow-x: hidden; /* Animasyonlar taşmasın */
 }
 
 /* Geri Dönüş Linki */
 .back-link-container {
     padding: 20px 50px;
+    border-bottom: 1px solid rgba(242, 169, 0, 0.2);
 }
 
 .back-link {
@@ -19,42 +21,39 @@ SİNASTRİ (UYUM HARİTASI) SAYFASI ÖZEL TASARIMI
     text-decoration: none;
     font-weight: bold;
     font-size: 18px;
-    transition: color 0.3s;
+    transition: 0.3s;
 }
 
-.back-link:hover {
-    color: #d19200;
-}
+.back-link:hover { color: #d19200; }
 
 /* İçerik Kapsayıcısı */
 .sinastri-wrapper {
-    padding: 20px;
+    padding: 40px 20px;
     max-width: 900px;
     margin: 0 auto;
     min-height: 80vh;
 }
 
-/* Başlıklar */
 .sinastri-title {
     text-align: center;
     color: #F2A900;
     font-family: 'Cinzel', serif;
     font-size: 40px;
+    margin-bottom: 10px;
 }
 
 .sinastri-desc {
     text-align: center;
     font-size: 16px;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
-/* Form Kartları ve Grid Düzeni */
+/* Form Kartları */
 .sinastri-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 40px;
-    margin-top: 40px;
 }
 
 .kisi-karti {
@@ -63,91 +62,175 @@ SİNASTRİ (UYUM HARİTASI) SAYFASI ÖZEL TASARIMI
     border-radius: 15px;
     border: 1px solid #F2A900;
     width: 350px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 .kisi-karti h3 {
     color: #F2A900;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     font-family: 'Cinzel', serif;
+    border-bottom: 1px dashed rgba(242, 169, 0, 0.3);
+    padding-bottom: 10px;
 }
 
-/* Form Elemanları (Input & Label) */
-.input-group {
-    margin-bottom: 15px;
-}
-
-.input-group label {
-    display: block;
-    color: #a0a2a5;
-    margin-bottom: 5px;
-    font-size: 14px;
-}
-
+/* Input Elemanları */
+.input-group { margin-bottom: 20px; }
+.input-group label { display: block; color: #a0a2a5; margin-bottom: 8px; font-size: 14px; }
 .input-group input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #333;
-    background: #0B0C10;
-    color: #fff;
-    font-family: 'Montserrat', sans-serif;
-    transition: border-color 0.3s;
+    width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333;
+    background: #0B0C10; color: #fff; font-family: 'Montserrat', sans-serif;
+    transition: 0.3s; box-sizing: border-box;
 }
-
-.input-group input:focus {
-    outline: none;
-    border-color: #F2A900;
-}
+.input-group input:focus { outline: none; border-color: #F2A900; }
 
 /* Hesapla Butonu */
 .hesapla-btn {
-    width: 100%;
-    padding: 15px;
-    margin-top: 30px;
-    background-color: #F2A900;
-    color: #000;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s, transform 0.3s;
-    font-family: 'Montserrat', sans-serif;
+    width: 100%; padding: 18px; margin-top: 40px; background-color: #F2A900;
+    color: #000; border: none; border-radius: 8px; font-weight: bold;
+    cursor: pointer; font-size: 18px; transition: 0.3s; font-family: 'Montserrat', sans-serif;
 }
-
 .hesapla-btn:hover {
-    background-color: #d19200;
-    transform: scale(1.02);
+    background-color: #d19200; transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(242, 169, 0, 0.3);
 }
 
-/* Sonuç Ekranı Kutusu */
+/* YÜKLEME (LOADING) EKRANI */
+.yukleme-ekrani {
+    text-align: center; margin: 50px 0; padding: 40px;
+    background: rgba(255, 255, 255, 0.03); border-radius: 15px;
+    border: 1px solid rgba(242, 169, 0, 0.2);
+}
+.kozmik-loading {
+    border: 6px solid rgba(242, 169, 0, 0.1); border-top: 6px solid #F2A900; 
+    border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; 
+    margin: 0 auto 20px auto;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* --- SONUÇ EKRANI ANA KUTUSU --- */
 .sonuc-kutusu {
-    margin-top: 50px;
+    margin-top: 30px;
     text-align: center;
-    background: rgba(242, 169, 0, 0.05);
-    padding: 40px;
+    background: rgba(242, 169, 0, 0.02); /* Çok şeffaf plan */
+    padding: 0 40px 40px 40px; /* Üstte animasyon sahnesi olacak */
     border-radius: 20px;
-    border: 2px dashed #F2A900;
+    border: 1px solid rgba(242, 169, 0, 0.1);
+    position: relative;
 }
 
-/* Dinamik Sonuç İçerikleri */
-#burclar-ozet {
-    color: #fff;
-    margin-bottom: 20px;
-    font-size: 22px;
+/* --- YENİ: ÇARPIŞMA SAHNESİ (PATLAMA ALANI) --- */
+.patlama-sahnesi {
+    height: 150px;
+    width: 100%;
+    position: relative;
+    overflow: hidden; /* Orblar kenarlardan gelsin */
+    margin-top: -30px; /* Kutunun içine hafif girsin */
 }
 
-#uyum-yuzdesi {
-    font-size: 30px;
-    color: #F2A900;
-    margin-bottom: 15px;
+/* Standart Orb Yapısı (Güneş Gibi) */
+.element-orb {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    position: absolute;
+    top: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: 'Cinzel', serif;
+    font-weight: bold;
+    font-size: 18px;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    opacity: 0; /* Başlangıçta gizli */
 }
 
-#uyum-yorumu {
-    font-size: 18px;
-    line-height: 1.8;
-    margin-top: 20px;
-    color: #E0E0E0;
+/* Başlangıç Pozisyonları (Kenarlar) */
+.orb-left { left: -100px; }
+.orb-right { right: -100px; }
+
+/* Element Renkleri ve Güneş Işıltıları (Box-shadow Şovu) */
+.ateş-orb {
+    background: radial-gradient(circle, #ff6666, #ff0000);
+    box-shadow: 0 0 25px #ff0000, 0 0 50px #ff6666;
 }
+.toprak-orb {
+    background: radial-gradient(circle, #b37700, #664400);
+    box-shadow: 0 0 25px #664400, 0 0 50px #b37700;
+}
+.hava-orb {
+    background: radial-gradient(circle, #fff, #a0a2a5);
+    box-shadow: 0 0 25px #a0a2a5, 0 0 50px #fff;
+}
+.su-orb {
+    background: radial-gradient(circle, #66e0ff, #0099cc);
+    box-shadow: 0 0 25px #0099cc, 0 0 50px #66e0ff;
+}
+
+/* Patlama Flashı (Tam Merkezde) */
+.patlama-flash {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background-color: #fff;
+    border-radius: 50%;
+    opacity: 0;
+    box-shadow: 0 0 100px 50px #fff; /* Bulanık parıltı */
+    filter: blur(10px);
+}
+
+/* --- ÇARPIŞMA ANİMASYONLARI --- */
+@keyframes meetAtCenterLeft {
+    0% { left: -100px; opacity: 1; transform: scale(1); }
+    80% { left: 45%; opacity: 1; transform: scale(1.1); } /* Merkezden biraz önce yavaşla */
+    100% { left: calc(50% - 35px); opacity: 0; transform: scale(0.8); } /* Çarpışma ve yok olma */
+}
+
+@keyframes meetAtCenterRight {
+    0% { right: -100px; opacity: 1; transform: scale(1); }
+    80% { right: 45%; opacity: 1; transform: scale(1.1); }
+    100% { right: calc(50% - 35px); opacity: 0; transform: scale(0.8); }
+}
+
+@keyframes flashBurst {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(1); filter: blur(10px); }
+    20% { opacity: 1; transform: translate(-50%, -50%) scale(15); filter: blur(0px); } /* Beyaz parlama */
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(20); filter: blur(10px); }
+}
+
+/* Sonuçların Pürüzsüz Belirmesi */
+@keyframes resultsFadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* --- SONUÇ METİNLERİ VE YÜZDELİK BAR (Aynı kalıyor ama JS ile belirecek) --- */
+#burclar-ozet { color: #fff; margin-bottom: 30px; font-size: 24px; line-height: 1.5; opacity: 0; }
+#uyum-yorumu { font-size: 18px; line-height: 1.8; margin-top: 30px; color: #E0E0E0; text-align: justify; opacity: 0; }
+
+.uyum-yuzdesi-alani { margin: 40px 0; opacity: 0; }
+.uyum-yuzdesi-alani h2 { color: #F2A900; font-family: 'Cinzel', serif; font-size: 28px; margin-bottom: 20px; }
+
+.progress-container {
+    width: 100%; height: 40px; background-color: rgba(242, 169, 0, 0.05); 
+    border: 1px solid rgba(242, 169, 0, 0.2); border-radius: 25px;
+    position: relative; overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%; width: 0%; background: linear-gradient(90deg, #d19200, #F2A900, #ffea99); 
+    border-radius: 25px; position: absolute; top: 0; left: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: 0.1s linear; box-shadow: 0 0 15px rgba(242, 169, 0, 0.4);
+}
+
+.progress-bar span {
+    color: #000; font-family: 'Montserrat', sans-serif; font-weight: bold;
+    font-size: 18px; position: absolute; left: 50%; transform: translateX(-50%);
+}
+
+@media (max-width: 768px) { .kisi-karti { width: 100%; } }

@@ -6,7 +6,7 @@
     <title>Kozmik Rehber | Astroloji ve Doğum Haritası</title>
 
     <!-- Dışarıdan Font Ekliyoruz -->
-    /*CİNZEL ve MONTSERRAT*/
+    
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,7 +14,6 @@
       rel="stylesheet"
     />
 
-    /*GRAVİTAS ONE ve LİBRE BASKERVİLLE*/
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -68,7 +67,7 @@
         <div class="service-card">
           <a href="sinastri.html" style="text-decoration: none; color: inherit">
             <div class="icon">🤝</div>
-            <h3>Sinastri (Uyum) Haritası</h3>
+            <h3>Burç Sinastrisi</h3>
             <p>
               İki kişinin burçlarını karşılaştırarak ilişkideki uyumu ve
               potansiyel dinamikleri inceleme.
@@ -76,20 +75,22 @@
           </a>
         </div>
         <div class="service-card">
-          <div class="icon">🔮</div>
-          <h3>Gelecek Öngörüleri</h3>
-          <p>
-            Mevcut gezegen transitlerinin kişisel haritanıza etkileri ve
-            önümüzdeki döneme dair ipuçları.
-          </p>
+          <a
+            href="tarotfali.html"
+            style="text-decoration: none; color: inherit"
+          >
+            <div class="icon">🔮</div>
+            <h3>Tarot Falı</h3>
+            <p>
+              Geçmişin izleri, bugünün enerjisi ve geleceğin potansiyelini tarot kartlarıyla keşfetme.
+            </p>
+          </a>
         </div>
       </div>
     </section>
 
     <!-- 3. BÖLÜM: REHBER (Layout 3) -->
     <section id="rehber" class="guide-section">
-      <br />
-      <br />
       <h2 class="section-title">Burçların Elementleri</h2>
       <div class="guide-container">
         <div class="guide-row">
@@ -212,5 +213,76 @@
         </p>
       </div>
     </section>
+
+    <section id="iletisim" class="iletisim-section">
+        <h2 class="iletisim-title">Bize Ulaşın</h2>
+        <p class="iletisim-desc">Astroloji, burç uyumları veya merak ettiğiniz her şey için bize yazabilirsiniz.</p>
+        
+        <form id="iletisim-formu" class="iletisim-formu" onsubmit="mesajGonder(event)">
+            <input type="text" placeholder="Adınız Soyadınız" required>
+            <input type="email" placeholder="E-posta Adresiniz" required>
+            <textarea placeholder="Mesajınız..." rows="5" required></textarea>
+            <button type="submit" id="gonder-btn">Mesajı Gönder ✨</button>
+        </form>
+
+        <div id="basari-bildirimi" style="display: none; text-align: center; color: #d19200; margin-top: 20px; font-size: 18px; font-weight: bold; font-family: 'Montserrat', sans-serif;">
+            ✨Mesajınız evrenin derinliklerine başarıyla ulaştı!
+        </div>
+    </section>
+
+    <script>
+        function mesajGonder(event) {
+            // Sayfanın yenilenmesini durdurur
+            event.preventDefault(); 
+            
+            const form = event.target;
+            const isim = form.elements[0].value;
+            const mail = form.elements[1].value;
+            const mesaj = form.elements[2].value;
+            const btn = document.getElementById('gonder-btn');
+
+            // Kullanıcıya işlemin başladığını göster
+            btn.innerText = "Gönderiliyor... ⏳"; 
+            btn.disabled = true; // Çift tıklamayı engelle
+            
+            // Senin özel Formspree linkinle verileri gönderiyoruz
+            fetch("https://formspree.io/f/xwvygpyo", {
+                method: "POST",
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    AdSoyad: isim,
+                    Email: mail,
+                    Mesaj: mesaj
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Başarılıysa formu temizle
+                    form.reset(); 
+                    btn.innerText = "Mesajı Gönder ✨"; 
+                    btn.disabled = false;
+                    
+                    // Yeşil başarı bildirimini göster
+                    const bildirim = document.getElementById('basari-bildirimi');
+                    bildirim.style.display = 'block'; 
+                    
+                    // 5 saniye sonra bildirimi gizle
+                    setTimeout(function() {
+                        bildirim.style.display = 'none'; 
+                    }, 5000);
+                } else {
+                    throw new Error("Bir sorun oluştu");
+                }
+            })
+            .catch(error => {
+                alert("Kozmik ağda bir sorun oluştu! Formspree panelinden ayarlarını kontrol edebilirsin.");
+                btn.innerText = "Mesajı Gönder ✨";
+                btn.disabled = false;
+            });
+        }
+    </script>
   </body>
 </html>
