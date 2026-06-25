@@ -22,6 +22,7 @@ Proje tamamen istemci taraflı (client-side) çalışan, hız odaklı bir yapıy
 3. **JS:** Kullanıcı etkileşimlerini yöneten, burç ve tarot verilerini işleyen mantık katmanı.
 
 ## 🚀 Nasıl Çalıştırılır?
-1. Repoyu klonlayın:
-   ```bash
-   git clone (https://github.com/ikbaltorun/kozmik-rehber)
+Uygulamayı indirmeden tarayıcınızda canlı olarak inceleyebilirsiniz:
+👉 **[Kozmik Rehber Canlı Demo](https://ikbaltorun.github.io/kozmik-rehber/)**
+
+*Alternatif olarak, repoyu klonlayıp yerel bilgisayarınızda `index.html` dosyasını açarak da çalıştırabilirsiniz.*
