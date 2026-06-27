@@ -25,4 +25,15 @@ Proje tamamen istemci taraflı (client-side) çalışan, hız odaklı bir yapıy
 Uygulamayı indirmeden tarayıcınızda canlı olarak inceleyebilirsiniz:
 👉 **[Kozmik Rehber Canlı Demo](https://ikbaltorun.github.io/kozmik-rehber/)**
 
-*Alternatif olarak, repoyu klonlayıp yerel bilgisayarınızda `index.html` dosyasını açarak da çalıştırabilirsiniz.*
+## 🚀 Kurulum
+
+Projeyi kendi bilgisayarınızda geliştirmek veya çalıştırmak için aşağıdaki adımları izleyebilirsiniz:
+
+**1. Proje Dosyalarını İndirin:** Terminalinizi açın ve kodları bilgisayarınıza çekmek için şu komutu çalıştırın:
+```bash
+git clone https://github.com/ikbaltorun/kozmik-rehber.git
+```
+**2. Projeyi Çalıştırın:** İndirdiğiniz klasörün içindeki index.html dosyasını herhangi bir web tarayıcısında (Chrome, Safari, Edge vb.) çift tıklayarak açmanız yeterlidir. (Geliştiriciler, VS Code üzerinden "Live Server" eklentisiyle de anlık önizleme yapabilirler).
+
+---
+*İkbal Torun | 2026*
